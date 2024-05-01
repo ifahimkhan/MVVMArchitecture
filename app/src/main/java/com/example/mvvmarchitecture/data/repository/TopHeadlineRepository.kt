@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TopHeadLineRepository @Inject constructor(private val networkService: NetworkService){
+class TopHeadlineRepository @Inject constructor(private val networkService: NetworkService){
     fun getTopHeadLines(country:String): Flow<List<Article>>{
         return flow {
             emit(networkService.getTopHeadlines(country))
