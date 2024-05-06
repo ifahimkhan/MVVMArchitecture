@@ -1,20 +1,18 @@
 package com.example.mvvmarchitecture.ui.topheadline
 
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle.*
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.manager.Lifecycle
 import com.example.mvvmarchitecture.MVVMApplication
-import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.data.model.Article
 import com.example.mvvmarchitecture.databinding.ActivityTopHeadlineBinding
+import com.example.mvvmarchitecture.di.component.DaggerActivityComponent
 import com.example.mvvmarchitecture.di.module.ActivityModule
 import com.example.mvvmarchitecture.ui.base.UiState
 import kotlinx.coroutines.launch
@@ -23,6 +21,7 @@ import javax.inject.Inject
 class TopHeadlineActivity : AppCompatActivity() {
     @Inject
     lateinit var topHeadlineViewModel: TopHeadlineViewModel
+
     @Inject
     lateinit var adapter: TopHeadlineAdapter
     private lateinit var binding: ActivityTopHeadlineBinding
@@ -37,18 +36,20 @@ class TopHeadlineActivity : AppCompatActivity() {
     }
 
     private fun setupObserver() {
-        lifecycleScope.launch{
-            repeatOnLifecycle(State.STARTED){
-                topHeadlineViewModel.uiState.collect{
-                    when(it){
-                        is UiState.Success ->{
+        lifecycleScope.launch {
+            repeatOnLifecycle(State.STARTED) {
+                topHeadlineViewModel.uiState.collect {
+                    when (it) {
+                        is UiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             renderList(it.data)
                             binding.recyclerView.visibility = View.VISIBLE
                         }
-                        is UiState.Error ->{
+
+                        is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(this@TopHeadlineActivity,it.message,Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@TopHeadlineActivity, it.message, Toast.LENGTH_LONG)
+                                .show()
                         }
 
                         UiState.Loading -> {
@@ -69,14 +70,18 @@ class TopHeadlineActivity : AppCompatActivity() {
     private fun setupUI() {
         val recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context,
-            (recyclerView.layoutManager as LinearLayoutManager).orientation))
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                recyclerView.context,
+                (recyclerView.layoutManager as LinearLayoutManager).orientation
+            )
+        )
         recyclerView.adapter = adapter
     }
-    private fun injectDependencies(){
+
+    private fun injectDependencies() {
         DaggerActivityComponent.builder()
             .applicationComponent((application as MVVMApplication).applicationComponent)
-            .activityModule(ActivityModule(this))
-            .build().inject(this)
+            .activityModule(ActivityModule(this)).build().inject(this)
     }
 }
