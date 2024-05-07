@@ -1,10 +1,12 @@
 package com.example.mvvmarchitecture.ui.topheadline
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle.*
+import androidx.lifecycle.Lifecycle.State
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -83,5 +85,11 @@ class TopHeadlineActivity : AppCompatActivity() {
         DaggerActivityComponent.builder()
             .applicationComponent((application as MVVMApplication).applicationComponent)
             .activityModule(ActivityModule(this)).build().inject(this)
+    }
+
+    companion object {
+        fun startActivity(context: Context) {
+            context.startActivity(Intent(context, TopHeadlineActivity::class.java))
+        }
     }
 }
