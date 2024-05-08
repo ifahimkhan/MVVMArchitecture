@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MVVMArchitecture"
         tools:targetApi="31">
         <activity
+            android:name=".ui.newssource.NewsSourcesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.home.HomeActivity"
             android:exported="true"
             android:theme="@style/Theme.MVVMArchitecture">
@@ -24,7 +27,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.topheadline.TopHeadlineActivity"

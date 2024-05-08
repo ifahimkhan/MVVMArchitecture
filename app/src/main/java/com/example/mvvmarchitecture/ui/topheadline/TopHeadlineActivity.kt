@@ -16,11 +16,12 @@ import com.example.mvvmarchitecture.data.model.Article
 import com.example.mvvmarchitecture.databinding.ActivityTopHeadlineBinding
 import com.example.mvvmarchitecture.di.component.DaggerActivityComponent
 import com.example.mvvmarchitecture.di.module.ActivityModule
+import com.example.mvvmarchitecture.ui.base.BaseActivity
 import com.example.mvvmarchitecture.ui.base.UiState
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TopHeadlineActivity : AppCompatActivity() {
+class TopHeadlineActivity : BaseActivity() {
     @Inject
     lateinit var topHeadlineViewModel: TopHeadlineViewModel
 
