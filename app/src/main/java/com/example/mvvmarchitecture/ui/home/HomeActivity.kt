@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mvvmarchitecture.databinding.ActivityHomeBinding
 import com.example.mvvmarchitecture.ui.base.BaseActivity
+import com.example.mvvmarchitecture.ui.newssource.NewsSourcesActivity
 import com.example.mvvmarchitecture.ui.topheadline.TopHeadlineActivity
 
 class HomeActivity : BaseActivity() {
@@ -15,6 +16,9 @@ class HomeActivity : BaseActivity() {
 
         binding.btnTopHeadlines.setOnClickListener {
             TopHeadlineActivity.startActivity(this)
+        }
+        binding.btnNewsSources.setOnClickListener {
+            NewsSourcesActivity.startActivity(this)
         }
     }
 }
