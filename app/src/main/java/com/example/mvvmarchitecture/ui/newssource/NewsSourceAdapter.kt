@@ -16,7 +16,7 @@ class NewsSourceAdapter(
         fun bind(source: Source) {
             binding.textViewSource.text = source.name
             itemView.setOnClickListener {
-
+                // TODO: setListener
             }
         }
     }
