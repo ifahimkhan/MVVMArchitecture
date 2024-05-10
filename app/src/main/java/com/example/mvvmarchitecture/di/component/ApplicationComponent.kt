@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.mvvmarchitecture.MVVMApplication
 import com.example.mvvmarchitecture.data.api.NetworkService
 import com.example.mvvmarchitecture.data.repository.CountriesRepository
+import com.example.mvvmarchitecture.data.repository.NewsRepository
 import com.example.mvvmarchitecture.data.repository.NewsSourcesRepository
 import com.example.mvvmarchitecture.data.repository.TopHeadlineRepository
 import com.example.mvvmarchitecture.di.ApplicationContext
@@ -26,4 +27,5 @@ interface ApplicationComponent {
     fun getNewsSourceRepository(): NewsSourcesRepository
 
     fun getCountriesRepository(): CountriesRepository
+    fun getNewsReporsitory(): NewsRepository
 }

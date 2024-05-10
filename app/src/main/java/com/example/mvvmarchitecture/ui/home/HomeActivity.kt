@@ -1,12 +1,12 @@
 package com.example.mvvmarchitecture.ui.home
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.example.mvvmarchitecture.databinding.ActivityHomeBinding
 import com.example.mvvmarchitecture.ui.base.BaseActivity
 import com.example.mvvmarchitecture.ui.countries.CountryActivity
 import com.example.mvvmarchitecture.ui.newssource.NewsSourcesActivity
 import com.example.mvvmarchitecture.ui.topheadline.TopHeadlineActivity
+import com.example.mvvmarchitecture.utils.AppConstant
 
 class HomeActivity : BaseActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -16,7 +16,7 @@ class HomeActivity : BaseActivity() {
         setContentView(binding.root)
 
         binding.btnTopHeadlines.setOnClickListener {
-            TopHeadlineActivity.startActivity(this)
+            TopHeadlineActivity.startActivity(this, AppConstant.NewsType.COUNTRY("IN"))
         }
         binding.btnNewsSources.setOnClickListener {
             NewsSourcesActivity.startActivity(this)
