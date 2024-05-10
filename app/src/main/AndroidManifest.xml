@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.example.mvvmarchitecture.MVVMApplication"
+        android:name=".MVVMApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,14 +16,24 @@
         android:theme="@style/Theme.MVVMArchitecture"
         tools:targetApi="31">
         <activity
-            android:name=".ui.topheadline.TopHeadlineActivity"
-            android:exported="true">
+            android:name=".ui.countries.CountryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.newssource.NewsSourcesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.home.HomeActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MVVMArchitecture">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.topheadline.TopHeadlineActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

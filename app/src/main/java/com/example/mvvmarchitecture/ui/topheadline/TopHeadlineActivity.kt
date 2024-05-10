@@ -1,10 +1,12 @@
 package com.example.mvvmarchitecture.ui.topheadline
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle.*
+import androidx.lifecycle.Lifecycle.State
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,11 +16,12 @@ import com.example.mvvmarchitecture.data.model.Article
 import com.example.mvvmarchitecture.databinding.ActivityTopHeadlineBinding
 import com.example.mvvmarchitecture.di.component.DaggerActivityComponent
 import com.example.mvvmarchitecture.di.module.ActivityModule
+import com.example.mvvmarchitecture.ui.base.BaseActivity
 import com.example.mvvmarchitecture.ui.base.UiState
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TopHeadlineActivity : AppCompatActivity() {
+class TopHeadlineActivity : BaseActivity() {
     @Inject
     lateinit var topHeadlineViewModel: TopHeadlineViewModel
 
@@ -83,5 +86,11 @@ class TopHeadlineActivity : AppCompatActivity() {
         DaggerActivityComponent.builder()
             .applicationComponent((application as MVVMApplication).applicationComponent)
             .activityModule(ActivityModule(this)).build().inject(this)
+    }
+
+    companion object {
+        fun startActivity(context: Context) {
+            context.startActivity(Intent(context, TopHeadlineActivity::class.java))
+        }
     }
 }
