@@ -17,11 +17,11 @@ class TopHeadlineViewModel(private val topHeadlineRepository: TopHeadlineReposit
 
     val uiState: StateFlow<UiState<List<Article>>> = _uiState
 
-    init {
-        fetchTopHeadlines()
-    }
+    /* init {
+         fetchTopHeadlines()
+     }*/
 
-    private fun fetchTopHeadlines() {
+    public fun fetchTopHeadlines() {
         viewModelScope.launch {
             topHeadlineRepository.getTopHeadlines(COUNTRY)
                 .catch { e ->
@@ -32,5 +32,30 @@ class TopHeadlineViewModel(private val topHeadlineRepository: TopHeadlineReposit
                 }
         }
     }
+
+    public fun fetchNewsByCountry(country: String) {
+        viewModelScope.launch {
+            topHeadlineRepository.getNewsByCountry(country)
+                .catch { e ->
+                    _uiState.value = UiState.Error(e.toString())
+                }
+                .collect {
+                    _uiState.value = UiState.Success(it)
+                }
+        }
+    }
+
+    public fun fetchNewsBySource(source: String) {
+        viewModelScope.launch {
+            topHeadlineRepository.getNewsBySource(source)
+                .catch { e ->
+                    _uiState.value = UiState.Error(e.toString())
+                }
+                .collect {
+                    _uiState.value = UiState.Success(it)
+                }
+        }
+    }
+
 
 }

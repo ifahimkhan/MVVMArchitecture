@@ -18,6 +18,8 @@ import com.example.mvvmarchitecture.di.component.DaggerActivityComponent
 import com.example.mvvmarchitecture.di.module.ActivityModule
 import com.example.mvvmarchitecture.ui.base.BaseActivity
 import com.example.mvvmarchitecture.ui.base.UiState
+import com.example.mvvmarchitecture.ui.topheadline.TopHeadlineActivity
+import com.example.mvvmarchitecture.utils.AppConstant
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -77,8 +79,8 @@ class CountryActivity : BaseActivity() {
     private fun renderList(data: List<Country>) {
         mAdapter.addData(data)
         mAdapter.notifyDataSetChanged()
-        Log.e("TAG", "renderList: ${binding.recyclerView.visibility}", )
-        Log.d("TAG", "renderList: "+data.size)
+        Log.e("TAG", "renderList: ${binding.recyclerView.visibility}")
+        Log.d("TAG", "renderList: " + data.size)
     }
 
     private fun setUpUI() {
@@ -87,6 +89,9 @@ class CountryActivity : BaseActivity() {
         recyclerview.layoutManager = linearLayoutManager
         recyclerview.addItemDecoration(DividerItemDecoration(this, linearLayoutManager.orientation))
         recyclerview.adapter = mAdapter
+        mAdapter.itemClickListener = {
+            TopHeadlineActivity.startActivity(this, AppConstant.NewsType.COUNTRY(it.code))
+        }
     }
 
     companion object {

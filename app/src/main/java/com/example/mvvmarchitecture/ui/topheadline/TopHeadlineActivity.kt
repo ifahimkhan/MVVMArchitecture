@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle.State
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -18,6 +17,7 @@ import com.example.mvvmarchitecture.di.component.DaggerActivityComponent
 import com.example.mvvmarchitecture.di.module.ActivityModule
 import com.example.mvvmarchitecture.ui.base.BaseActivity
 import com.example.mvvmarchitecture.ui.base.UiState
+import com.example.mvvmarchitecture.utils.AppConstant
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,8 +34,30 @@ class TopHeadlineActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTopHeadlineBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initData()
         setupUI()
         setupObserver()
+    }
+
+    private fun initData() {
+        val newsType: AppConstant.NewsType? = intent.getParcelableExtra(NEWS_BY)
+        when (newsType) {
+            is AppConstant.NewsType.COUNTRY -> {
+                topHeadlineViewModel.fetchNewsByCountry(newsType.code)
+                Toast.makeText(this, "Selected code is ${newsType.code}", Toast.LENGTH_SHORT).show()
+            }
+
+            is AppConstant.NewsType.SOURCE -> {
+                topHeadlineViewModel.fetchNewsBySource(newsType.id)
+                Toast.makeText(this, "Selected code is ${newsType.id}", Toast.LENGTH_SHORT).show()
+
+            }
+            is AppConstant.NewsType.LANGUAGE -> {
+                // TODO:
+            }
+
+        }
+
     }
 
     private fun setupObserver() {
@@ -89,8 +111,12 @@ class TopHeadlineActivity : BaseActivity() {
     }
 
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, TopHeadlineActivity::class.java))
+        private const val NEWS_BY = "NEWS_BY"
+
+        fun startActivity(context: Context, newsType: AppConstant.NewsType) {
+            context.startActivity(Intent(context, TopHeadlineActivity::class.java).apply {
+                this.putExtra(NEWS_BY, newsType)
+            })
         }
     }
 }

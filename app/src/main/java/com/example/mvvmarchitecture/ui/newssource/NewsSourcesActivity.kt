@@ -17,6 +17,8 @@ import com.example.mvvmarchitecture.di.component.DaggerActivityComponent
 import com.example.mvvmarchitecture.di.module.ActivityModule
 import com.example.mvvmarchitecture.ui.base.BaseActivity
 import com.example.mvvmarchitecture.ui.base.UiState
+import com.example.mvvmarchitecture.ui.topheadline.TopHeadlineActivity
+import com.example.mvvmarchitecture.utils.AppConstant
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -90,6 +92,9 @@ class NewsSourcesActivity : BaseActivity() {
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = mAdapter
         recyclerView.addItemDecoration(DividerItemDecoration(this, linearLayoutManager.orientation))
+        mAdapter.itemClickListener = {
+            TopHeadlineActivity.startActivity(this, AppConstant.NewsType.SOURCE(it.id!!))
+        }
     }
 
     companion object {
