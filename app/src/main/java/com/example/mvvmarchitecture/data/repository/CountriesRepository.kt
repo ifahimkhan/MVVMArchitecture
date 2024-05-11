@@ -20,8 +20,8 @@ class CountriesRepository @Inject constructor(@ApplicationContext private val co
         return flow<List<Country>> {
             val data = IOUtils.readJsonFromAssets(context, AppConstant.FILE_COUNTRIES)
             val gson = Gson()
-            Log.d("TAG", "getCountries: "+data)
+            Log.d("TAG", "getCountries: " + data)
             emit(gson.fromJson(data, object : TypeToken<List<Country>>() {}.type))
-        }.map { it }
+        }.map { it -> it.filter { it.code.lowercase() in AppConstant.COUNTRIES_SUPPORTED_BY_NEWS_API } }
     }
 }
