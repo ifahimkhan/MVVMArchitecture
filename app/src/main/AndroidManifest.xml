@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MVVMArchitecture"
         tools:targetApi="31">
         <activity
+            android:name=".ui.language.LanguageActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.countries.CountryActivity"
             android:exported="false" />
         <activity

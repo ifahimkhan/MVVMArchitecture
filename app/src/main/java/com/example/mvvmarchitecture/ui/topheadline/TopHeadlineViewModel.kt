@@ -57,5 +57,16 @@ class TopHeadlineViewModel(private val topHeadlineRepository: TopHeadlineReposit
         }
     }
 
+    fun fetchNewsByLanguage(languageId: String) {
+        viewModelScope.launch {
+            topHeadlineRepository.getNewsByLanguage(languageId)
+                .catch { e ->
+                    _uiState.value = UiState.Error(e.toString())
+                }.collect {
+                    _uiState.value = UiState.Success(it)
+                }
+        }
+    }
+
 
 }
