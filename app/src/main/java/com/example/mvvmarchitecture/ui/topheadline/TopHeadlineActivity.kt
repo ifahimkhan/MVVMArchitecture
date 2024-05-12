@@ -43,26 +43,38 @@ class TopHeadlineActivity : BaseActivity() {
         val newsType: AppConstant.NewsType? = intent.getParcelableExtra(NEWS_BY)
         when (newsType) {
             is AppConstant.NewsType.COUNTRY -> {
-                topHeadlineViewModel.fetchNewsByCountry(newsType.code)
-                Toast.makeText(this, "Selected code is ${newsType.code}", Toast.LENGTH_SHORT).show()
+                topHeadlineViewModel.fetchNewsByCountry(newsType.countryCode)
+                Toast.makeText(this, "Selected code is ${newsType.countryCode}", Toast.LENGTH_SHORT)
+                    .show()
             }
 
             is AppConstant.NewsType.SOURCE -> {
-                topHeadlineViewModel.fetchNewsBySource(newsType.id)
-                Toast.makeText(this, "Selected code is ${newsType.id}", Toast.LENGTH_SHORT).show()
+                topHeadlineViewModel.fetchNewsBySource(newsType.sourceId)
+                Toast.makeText(this, "Selected code is ${newsType.sourceId}", Toast.LENGTH_SHORT)
+                    .show()
 
             }
+
             is AppConstant.NewsType.LANGUAGE -> {
-                // TODO:
+                topHeadlineViewModel.fetchNewsByLanguage(newsType.languageId)
+                Toast.makeText(
+                    this,
+                    "Selected language is ${newsType.languageId}",
+                    Toast.LENGTH_SHORT
+                ).show()
+
             }
 
+            null -> {
+                topHeadlineViewModel.fetchTopHeadlines()
+            }
         }
 
     }
 
     private fun setupObserver() {
         lifecycleScope.launch {
-            repeatOnLifecycle(State.STARTED) {
+            repeatOnLifecycle(State.CREATED) {
                 topHeadlineViewModel.uiState.collect {
                     when (it) {
                         is UiState.Success -> {

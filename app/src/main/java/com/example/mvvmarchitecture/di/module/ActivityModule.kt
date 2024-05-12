@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.mvvmarchitecture.data.repository.CountriesRepository
+import com.example.mvvmarchitecture.data.repository.LanguageRepository
 import com.example.mvvmarchitecture.data.repository.NewsSourcesRepository
 import com.example.mvvmarchitecture.data.repository.TopHeadlineRepository
 import com.example.mvvmarchitecture.di.ActivityContext
 import com.example.mvvmarchitecture.ui.base.ViewModelProviderFactory
 import com.example.mvvmarchitecture.ui.countries.CountryAdapter
 import com.example.mvvmarchitecture.ui.countries.CountryViewModel
+import com.example.mvvmarchitecture.ui.language.LanguageAdapter
+import com.example.mvvmarchitecture.ui.language.LanguageViewModel
 import com.example.mvvmarchitecture.ui.newssource.NewsSourceAdapter
 import com.example.mvvmarchitecture.ui.newssource.NewsSourceViewModel
 import com.example.mvvmarchitecture.ui.topheadline.TopHeadlineAdapter
@@ -62,4 +65,14 @@ class ActivityModule(private val activity: AppCompatActivity) {
     @Provides
     fun provideCountriesAdapter() = CountryAdapter(ArrayList())
 
+
+    @Provides
+    fun getLanguageAdapter() = LanguageAdapter(ArrayList())
+
+    @Provides
+    fun provideLanguageViewModel(languageRepository: LanguageRepository): LanguageViewModel {
+        return ViewModelProvider(activity, ViewModelProviderFactory(LanguageViewModel::class) {
+            LanguageViewModel(languageRepository = languageRepository)
+        }).get(LanguageViewModel::class.java)
+    }
 }

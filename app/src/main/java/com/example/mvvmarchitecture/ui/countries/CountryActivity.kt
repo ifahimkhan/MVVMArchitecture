@@ -51,7 +51,7 @@ class CountryActivity : BaseActivity() {
 
     private fun setUpObserver() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.uiState.collect {
                     when (it) {
                         is UiState.Error -> {
