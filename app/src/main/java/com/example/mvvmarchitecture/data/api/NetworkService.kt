@@ -29,4 +29,8 @@ interface NetworkService {
     @Headers("X-Api-Key: $API_KEY")
     @GET("top-headlines")
     suspend fun getNewsByLanguage(@Query("language") source: String): TopHeadlineResponse
+    @Headers("X-Api-Key: $API_KEY")
+    @GET("everything")
+    suspend fun getNewsBySearch(@Query("q") phrase: String): TopHeadlineResponse
+
 }

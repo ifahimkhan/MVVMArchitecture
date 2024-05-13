@@ -5,6 +5,7 @@ import com.example.mvvmarchitecture.di.module.ActivityModule
 import com.example.mvvmarchitecture.ui.countries.CountryActivity
 import com.example.mvvmarchitecture.ui.language.LanguageActivity
 import com.example.mvvmarchitecture.ui.newssource.NewsSourcesActivity
+import com.example.mvvmarchitecture.ui.search.SearchActivity
 import com.example.mvvmarchitecture.ui.topheadline.TopHeadlineActivity
 import dagger.Component
 
@@ -15,4 +16,5 @@ interface ActivityComponent {
     fun inject(context: NewsSourcesActivity)
     fun inject(context: CountryActivity)
     fun inject(context: LanguageActivity)
+    fun inject(context: SearchActivity)
 }
