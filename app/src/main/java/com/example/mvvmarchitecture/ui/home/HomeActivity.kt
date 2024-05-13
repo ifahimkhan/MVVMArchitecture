@@ -6,6 +6,7 @@ import com.example.mvvmarchitecture.ui.base.BaseActivity
 import com.example.mvvmarchitecture.ui.countries.CountryActivity
 import com.example.mvvmarchitecture.ui.language.LanguageActivity
 import com.example.mvvmarchitecture.ui.newssource.NewsSourcesActivity
+import com.example.mvvmarchitecture.ui.search.SearchActivity
 import com.example.mvvmarchitecture.ui.topheadline.TopHeadlineActivity
 import com.example.mvvmarchitecture.utils.AppConstant
 
@@ -27,6 +28,9 @@ class HomeActivity : BaseActivity() {
         }
         binding.btnLanguages.setOnClickListener {
             LanguageActivity.startActivity(this)
+        }
+        binding.btnSearch.setOnClickListener {
+            SearchActivity.startActivity(this)
         }
     }
 }
