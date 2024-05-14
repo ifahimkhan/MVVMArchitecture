@@ -100,6 +100,17 @@ class LanguageActivity : AppCompatActivity() {
                 )
             }
         }
+        binding.btnFetchNewsByLanguages.setOnClickListener {
+            if (mAdapter.getSelectedLanguages().size > 2) {
+                Toast.makeText(this, "Max 2 languages allowed ", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val selectedLanguages = mAdapter.getSelectedLanguages().joinToString { it.code }
+            TopHeadlineActivity.startActivity(
+                this,
+                AppConstant.NewsType.LANGUAGE(selectedLanguages)
+            )
+        }
 
     }
 
@@ -112,7 +123,7 @@ class LanguageActivity : AppCompatActivity() {
 
     companion object {
         fun startActivity(context: Context) {
-           context.startActivity(Intent(context,LanguageActivity::class.java))
+            context.startActivity(Intent(context, LanguageActivity::class.java))
         }
     }
 }

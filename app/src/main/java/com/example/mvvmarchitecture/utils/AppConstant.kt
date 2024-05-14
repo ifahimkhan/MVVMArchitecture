@@ -19,7 +19,7 @@ object AppConstant {
         data class SOURCE(var sourceId: String) : NewsType()
 
         @Parcelize
-        data class LANGUAGE(var languageId: String) : NewsType()
+        data class LANGUAGE(var languageIds: String) : NewsType()
     }
 
     val COUNTRIES_SUPPORTED_BY_NEWS_API = arrayListOf<String>(

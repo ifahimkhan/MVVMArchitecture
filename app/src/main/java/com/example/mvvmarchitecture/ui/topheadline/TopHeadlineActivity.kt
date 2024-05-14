@@ -56,10 +56,13 @@ class TopHeadlineActivity : BaseActivity() {
             }
 
             is AppConstant.NewsType.LANGUAGE -> {
-                topHeadlineViewModel.fetchNewsByLanguage(newsType.languageId)
+                if (newsType.languageIds.contains(","))
+                    topHeadlineViewModel.fetchNewsByLanguages(newsType.languageIds.split(","))
+                else
+                    topHeadlineViewModel.fetchNewsByLanguage(newsType.languageIds)
                 Toast.makeText(
                     this,
-                    "Selected language is ${newsType.languageId}",
+                    "Selected language is ${newsType.languageIds}",
                     Toast.LENGTH_SHORT
                 ).show()
 
