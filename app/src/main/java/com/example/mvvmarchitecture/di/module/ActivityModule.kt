@@ -15,6 +15,7 @@ import com.example.mvvmarchitecture.ui.language.LanguageAdapter
 import com.example.mvvmarchitecture.ui.language.LanguageViewModel
 import com.example.mvvmarchitecture.ui.newssource.NewsSourceAdapter
 import com.example.mvvmarchitecture.ui.newssource.NewsSourceViewModel
+import com.example.mvvmarchitecture.ui.search.SearchViewModel
 import com.example.mvvmarchitecture.ui.topheadline.TopHeadlineAdapter
 import com.example.mvvmarchitecture.ui.topheadline.TopHeadlineViewModel
 import dagger.Module
@@ -74,5 +75,12 @@ class ActivityModule(private val activity: AppCompatActivity) {
         return ViewModelProvider(activity, ViewModelProviderFactory(LanguageViewModel::class) {
             LanguageViewModel(languageRepository = languageRepository)
         }).get(LanguageViewModel::class.java)
+    }
+
+    @Provides
+    fun provideSearchViewModel(topHeadlineRepository: TopHeadlineRepository): SearchViewModel {
+        return ViewModelProvider(activity, ViewModelProviderFactory(SearchViewModel::class) {
+            SearchViewModel(topHeadlineRepository)
+        }).get(SearchViewModel::class.java)
     }
 }

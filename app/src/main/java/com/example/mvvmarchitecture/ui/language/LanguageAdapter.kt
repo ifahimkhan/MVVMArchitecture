@@ -4,9 +4,8 @@ package com.example.mvvmarchitecture.ui.language
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mvvmarchitecture.data.model.Country
 import com.example.mvvmarchitecture.data.model.Language
-import com.example.mvvmarchitecture.databinding.NewsSourceItemLayoutBinding
+import com.example.mvvmarchitecture.databinding.LanguageItemLayoutBinding
 import com.example.mvvmarchitecture.utils.OnItemClickListener
 
 class LanguageAdapter(
@@ -14,19 +13,20 @@ class LanguageAdapter(
 ) : RecyclerView.Adapter<LanguageAdapter.DataViewHolder>() {
     lateinit var itemClickListener: OnItemClickListener<Language>
 
-    class DataViewHolder(private val binding: NewsSourceItemLayoutBinding) :
+    class DataViewHolder(private val binding: LanguageItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(model: Language, itemClickListener: OnItemClickListener<Language>) {
-            binding.textViewSource.text = model.name
-            binding.textViewSource.setOnClickListener {
-                itemClickListener(model)
+        fun bind(model: Language) {
+            binding.textViewLanguage.text = model.name
+            binding.textViewLanguage.isChecked = model.isChecked
+            binding.textViewLanguage.setOnClickListener {
+                model.isChecked = !model.isChecked
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         DataViewHolder(
-            NewsSourceItemLayoutBinding.inflate(
+            LanguageItemLayoutBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -36,10 +36,14 @@ class LanguageAdapter(
     override fun getItemCount(): Int = languageList.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
-        holder.bind(languageList[position], itemClickListener)
+        holder.bind(languageList[position])
 
     fun addData(list: List<Language>) {
         languageList.addAll(list)
+    }
+
+    fun getSelectedLanguages(): List<Language> {
+        return languageList.filter { it.isChecked }
     }
 
 }

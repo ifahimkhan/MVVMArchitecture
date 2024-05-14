@@ -19,7 +19,7 @@ object AppConstant {
         data class SOURCE(var sourceId: String) : NewsType()
 
         @Parcelize
-        data class LANGUAGE(var languageId: String) : NewsType()
+        data class LANGUAGE(var languageIds: String) : NewsType()
     }
 
     val COUNTRIES_SUPPORTED_BY_NEWS_API = arrayListOf<String>(
@@ -78,4 +78,19 @@ object AppConstant {
         "ve",
         "za"
     )
+
+    interface ApiHeaders {
+        interface Key {
+            companion object {
+                const val API_KEY = "X-Api-Key"
+            }
+        }
+
+        interface Value {
+            companion object {
+                const val API_KEY = "c5fb8da0aa4c4e818e1db97a06162d7d"
+            }
+        }
+
+    }
 }

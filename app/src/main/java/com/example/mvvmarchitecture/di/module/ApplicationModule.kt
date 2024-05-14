@@ -2,11 +2,13 @@ package com.example.mvvmarchitecture.di.module
 
 import android.app.Application
 import android.content.Context
+import com.example.mvvmarchitecture.data.api.HeaderInterceptor
 import com.example.mvvmarchitecture.data.api.NetworkService
 import com.example.mvvmarchitecture.di.ApplicationContext
 import com.example.mvvmarchitecture.di.BaseUrl
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -30,13 +32,25 @@ class ApplicationModule(private val application: Application) {
     @Provides
     fun provideNetworkService(
         @BaseUrl baseUrl: String,
-        gsonConverterFactory: GsonConverterFactory
+        gsonConverterFactory: GsonConverterFactory,
+        okHttpClient: OkHttpClient
     ): NetworkService {
         return Retrofit.Builder()
+            .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .baseUrl(baseUrl)
             .build()
             .create(NetworkService::class.java)
 
     }
+
+    @Singleton
+    @Provides
+    fun provideOkHttpClient(headerInterceptor: HeaderInterceptor): OkHttpClient {
+        return OkHttpClient().newBuilder().addInterceptor(headerInterceptor).build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideHeaderInterceptor() = HeaderInterceptor()
 }

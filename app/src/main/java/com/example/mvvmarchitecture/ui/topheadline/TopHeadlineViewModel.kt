@@ -6,9 +6,12 @@ import com.example.mvvmarchitecture.data.model.Article
 import com.example.mvvmarchitecture.data.repository.TopHeadlineRepository
 import com.example.mvvmarchitecture.ui.base.UiState
 import com.example.mvvmarchitecture.utils.AppConstant.COUNTRY
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 class TopHeadlineViewModel(private val topHeadlineRepository: TopHeadlineRepository) : ViewModel() {
@@ -62,6 +65,27 @@ class TopHeadlineViewModel(private val topHeadlineRepository: TopHeadlineReposit
             topHeadlineRepository.getNewsByLanguage(languageId)
                 .catch { e ->
                     _uiState.value = UiState.Error(e.toString())
+                }.collect {
+                    _uiState.value = UiState.Success(it)
+                }
+        }
+    }
+
+    fun fetchNewsByLanguages(languageIds: List<String>) {
+        var lang1 = languageIds[0].trim()
+        var lang2 = languageIds[1].trim()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            topHeadlineRepository.getNewsByLanguage(lang1)
+                .zip(topHeadlineRepository.getNewsByLanguage(lang2)) { result1, result2 ->
+                    val articles = mutableListOf<Article>()
+                    articles.addAll(result1)
+                    articles.addAll(result2)
+                    return@zip articles
+                }
+                .flowOn(Dispatchers.IO)
+                .catch { error ->
+                    _uiState.value = UiState.Error(error.toString())
                 }.collect {
                     _uiState.value = UiState.Success(it)
                 }
