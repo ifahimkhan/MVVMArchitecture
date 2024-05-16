@@ -7,47 +7,44 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mvvmarchitecture.MVVMApplication
 import com.example.mvvmarchitecture.data.model.Country
 import com.example.mvvmarchitecture.databinding.ActivityCountryBinding
-import com.example.mvvmarchitecture.di.component.DaggerActivityComponent
-import com.example.mvvmarchitecture.di.module.ActivityModule
 import com.example.mvvmarchitecture.ui.base.BaseActivity
 import com.example.mvvmarchitecture.ui.base.UiState
 import com.example.mvvmarchitecture.ui.topheadline.TopHeadlineActivity
 import com.example.mvvmarchitecture.utils.AppConstant
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class CountryActivity : BaseActivity() {
     private lateinit var binding: ActivityCountryBinding
 
-    @Inject
-    lateinit var viewModel: CountryViewModel
+    private lateinit var viewModel: CountryViewModel
 
     @Inject
     lateinit var mAdapter: CountryAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectDependency()
         super.onCreate(savedInstanceState)
         binding = ActivityCountryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setUpViewModel()
         setUpUI()
         setUpObserver()
     }
 
-    private fun injectDependency() {
-        DaggerActivityComponent.builder()
-            .applicationComponent((application as MVVMApplication).applicationComponent)
-            .activityModule(ActivityModule(this))
-            .build().inject(this)
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(this)[CountryViewModel::class.java]
     }
+
 
     private fun setUpObserver() {
         lifecycleScope.launch {
