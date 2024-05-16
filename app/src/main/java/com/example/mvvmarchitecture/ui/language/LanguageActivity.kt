@@ -8,38 +8,40 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mvvmarchitecture.MVVMApplication
 import com.example.mvvmarchitecture.data.model.Language
 import com.example.mvvmarchitecture.databinding.ActivityLanguageBinding
-import com.example.mvvmarchitecture.di.component.DaggerActivityComponent
-import com.example.mvvmarchitecture.di.module.ActivityModule
 import com.example.mvvmarchitecture.ui.base.UiState
 import com.example.mvvmarchitecture.ui.topheadline.TopHeadlineActivity
 import com.example.mvvmarchitecture.utils.AppConstant
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class LanguageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLanguageBinding
 
     @Inject
     lateinit var mAdapter: LanguageAdapter
 
-    @Inject
-    lateinit var viewModel: LanguageViewModel
+    private lateinit var viewModel: LanguageViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectDependency()
         super.onCreate(savedInstanceState)
         binding = ActivityLanguageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setUpViewModel()
         setUpUI()
         setUpObserver()
 
+    }
+
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(this)[LanguageViewModel::class.java]
     }
 
     private fun setUpObserver() {
@@ -112,13 +114,6 @@ class LanguageActivity : AppCompatActivity() {
             )
         }
 
-    }
-
-    private fun injectDependency() {
-        DaggerActivityComponent.builder()
-            .applicationComponent((application as MVVMApplication).applicationComponent)
-            .activityModule(ActivityModule(this))
-            .build().inject(this)
     }
 
     companion object {
