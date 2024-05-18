@@ -1,29 +1,26 @@
 package com.example.mvvmarchitecture.di.module
 
-import android.app.Application
-import android.content.Context
 import com.example.mvvmarchitecture.data.api.HeaderInterceptor
 import com.example.mvvmarchitecture.data.api.NetworkService
-import com.example.mvvmarchitecture.di.ApplicationContext
 import com.example.mvvmarchitecture.di.BaseUrl
+import com.example.mvvmarchitecture.utils.AppConstant
+import com.example.mvvmarchitecture.utils.logger.AppLogger
+import com.example.mvvmarchitecture.utils.logger.Logger
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule(private val application: Application) {
-    @ApplicationContext
-    @Provides
-    fun provideContext(): Context {
-        return application.applicationContext
-    }
-
+@InstallIn(SingletonComponent::class)
+class ApplicationModule() {
     @BaseUrl
     @Provides
-    fun provideBaseUrl(): String = "https://newsapi.org/v2/"
+    fun provideBaseUrl(): String = AppConstant.BASE_URL
 
     @Provides
     @Singleton
@@ -53,4 +50,9 @@ class ApplicationModule(private val application: Application) {
     @Singleton
     @Provides
     fun provideHeaderInterceptor() = HeaderInterceptor()
+
+    @Provides
+    @Singleton
+    fun provideLogger(): Logger = AppLogger()
+
 }

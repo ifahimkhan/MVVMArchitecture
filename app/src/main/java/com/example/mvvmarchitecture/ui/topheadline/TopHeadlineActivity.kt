@@ -6,37 +6,40 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle.State
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mvvmarchitecture.MVVMApplication
 import com.example.mvvmarchitecture.data.model.Article
 import com.example.mvvmarchitecture.databinding.ActivityTopHeadlineBinding
-import com.example.mvvmarchitecture.di.component.DaggerActivityComponent
-import com.example.mvvmarchitecture.di.module.ActivityModule
 import com.example.mvvmarchitecture.ui.base.BaseActivity
 import com.example.mvvmarchitecture.ui.base.UiState
 import com.example.mvvmarchitecture.utils.AppConstant
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class TopHeadlineActivity : BaseActivity() {
-    @Inject
-    lateinit var topHeadlineViewModel: TopHeadlineViewModel
+    private lateinit var topHeadlineViewModel: TopHeadlineViewModel
 
     @Inject
     lateinit var adapter: TopHeadlineAdapter
     private lateinit var binding: ActivityTopHeadlineBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectDependencies()
         super.onCreate(savedInstanceState)
         binding = ActivityTopHeadlineBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setUpViewModel()
         initData()
         setupUI()
         setupObserver()
+    }
+
+    private fun setUpViewModel() {
+        topHeadlineViewModel = ViewModelProvider(this)[TopHeadlineViewModel::class.java]
     }
 
     private fun initData() {
@@ -117,12 +120,6 @@ class TopHeadlineActivity : BaseActivity() {
             )
         )
         recyclerView.adapter = adapter
-    }
-
-    private fun injectDependencies() {
-        DaggerActivityComponent.builder()
-            .applicationComponent((application as MVVMApplication).applicationComponent)
-            .activityModule(ActivityModule(this)).build().inject(this)
     }
 
     companion object {

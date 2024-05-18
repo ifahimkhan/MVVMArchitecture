@@ -6,6 +6,8 @@ import com.example.mvvmarchitecture.data.model.Article
 import com.example.mvvmarchitecture.data.repository.TopHeadlineRepository
 import com.example.mvvmarchitecture.ui.base.UiState
 import com.example.mvvmarchitecture.utils.AppConstant.COUNTRY
+import com.example.mvvmarchitecture.utils.logger.Logger
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,8 +15,13 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TopHeadlineViewModel(private val topHeadlineRepository: TopHeadlineRepository) : ViewModel() {
+@HiltViewModel
+class TopHeadlineViewModel @Inject constructor(
+    private val topHeadlineRepository: TopHeadlineRepository,
+    private val logger: Logger
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
 
@@ -74,7 +81,7 @@ class TopHeadlineViewModel(private val topHeadlineRepository: TopHeadlineReposit
     fun fetchNewsByLanguages(languageIds: List<String>) {
         var lang1 = languageIds[0].trim()
         var lang2 = languageIds[1].trim()
-
+        logger.d(TopHeadlineViewModel::class.java, "lang1= $lang1 and lang2=$lang2")
         viewModelScope.launch(Dispatchers.IO) {
             topHeadlineRepository.getNewsByLanguage(lang1)
                 .zip(topHeadlineRepository.getNewsByLanguage(lang2)) { result1, result2 ->
@@ -87,6 +94,7 @@ class TopHeadlineViewModel(private val topHeadlineRepository: TopHeadlineReposit
                 .catch { error ->
                     _uiState.value = UiState.Error(error.toString())
                 }.collect {
+                    it.shuffle()
                     _uiState.value = UiState.Success(it)
                 }
         }
