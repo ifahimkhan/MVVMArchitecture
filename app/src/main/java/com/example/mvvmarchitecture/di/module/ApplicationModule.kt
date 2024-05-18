@@ -4,8 +4,8 @@ import com.example.mvvmarchitecture.data.api.HeaderInterceptor
 import com.example.mvvmarchitecture.data.api.NetworkService
 import com.example.mvvmarchitecture.di.BaseUrl
 import com.example.mvvmarchitecture.utils.AppConstant
-import com.example.mvvmarchitecture.utils.AppLogger
-import com.example.mvvmarchitecture.utils.Logger
+import com.example.mvvmarchitecture.utils.logger.AppLogger
+import com.example.mvvmarchitecture.utils.logger.Logger
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

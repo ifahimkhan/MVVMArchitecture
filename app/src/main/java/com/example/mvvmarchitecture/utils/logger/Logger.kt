@@ -1,4 +1,4 @@
-package com.example.mvvmarchitecture.utils
+package com.example.mvvmarchitecture.utils.logger
 
 interface Logger {
 
