@@ -15,25 +15,4 @@ import dagger.hilt.android.scopes.ActivityScoped
 @InstallIn(ActivityComponent::class)
 class ActivityModule() {
 
-    @ActivityScoped
-    @Provides
-    fun provideTopHeadlineAdapter() = TopHeadlineAdapter(ArrayList())
-
-
-
-    @ActivityScoped
-    @Provides
-    fun provideNewsSourceAdapter() = NewsSourceAdapter(ArrayList())
-
-
-
-    @ActivityScoped
-    @Provides
-    fun provideCountriesAdapter() = CountryAdapter(ArrayList())
-
-
-    @ActivityScoped
-    @Provides
-    fun getLanguageAdapter() = LanguageAdapter(ArrayList())
-
 }
