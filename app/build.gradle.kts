@@ -75,6 +75,8 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("androidx.compose.material:material-icons-extended")
+
 
 
 
@@ -85,13 +87,19 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-extensions:2.0.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation ("androidx.browser:browser:1.4.0")/*
+    implementation ("androidx.browser:browser:1.4.0")
+    /*
     implementation ("com.google.dagger:dagger:2.42")
     kapt ("com.google.dagger:dagger-compiler:2.42")*/
+
     implementation("com.google.dagger:hilt-android:2.44")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
     kapt("com.google.dagger:hilt-compiler:2.44")
+
+    implementation ("androidx.room:room-runtime:2.5.0")
+    implementation ("androidx.room:room-ktx:2.5.0")
+    kapt ("androidx.room:room-compiler:2.6.1")
 
 
 }

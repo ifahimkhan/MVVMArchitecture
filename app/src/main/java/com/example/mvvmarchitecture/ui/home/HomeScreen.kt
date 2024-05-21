@@ -1,5 +1,6 @@
 package com.example.mvvmarchitecture.ui.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,7 +41,13 @@ fun HomeScreenRoute(navController: NavController = rememberNavController()) {
 @Preview
 @Composable
 fun HomeScreen(navController: NavController = rememberNavController()) {
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         SimpleButton("Top Headlines", Route.Home.name, navController)
         SimpleButton("News Sources", Route.NewsBySource.name, navController)
         SimpleButton("News Countries", Route.NewsByCountries.name, navController)

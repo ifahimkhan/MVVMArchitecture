@@ -1,12 +1,23 @@
 package com.example.mvvmarchitecture.ui.base
 
+import android.content.Context
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.mvvmarchitecture.ui.countries.CountriesScreenRoute
 import com.example.mvvmarchitecture.ui.home.HomeScreenRoute
+import com.example.mvvmarchitecture.ui.language.LanguagesScreenRoute
+import com.example.mvvmarchitecture.ui.newssource.SourceScreenRoute
+import com.example.mvvmarchitecture.ui.search.SearchScreenRoute
+import com.example.mvvmarchitecture.ui.topheadline.TopHeadLineScreenRoute
+import com.example.mvvmarchitecture.utils.AppConstant
 
 sealed class Route(val name: String) {
     object Home : Route("Home")
@@ -38,5 +49,75 @@ fun NewsNavHost() {
         composable(route = Route.Home.name) {
             HomeScreenRoute(navController)
         }
+        composable(
+            route = Route.topHeadlineRoute.name,
+            arguments = listOf(
+                navArgument(AppConstant.NewsBy.IntentParam.Key.NEWS_TYPE) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                },
+                navArgument(AppConstant.NewsBy.IntentParam.Key.NEWS_TYPE_ID) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) {
+            val newsType = it.arguments?.getString(AppConstant.NewsBy.IntentParam.Key.NEWS_TYPE)
+            val newsTypeId =
+                it.arguments?.getString(AppConstant.NewsBy.IntentParam.Key.NEWS_TYPE_ID)
+            TopHeadLineScreenRoute(
+                onNewsClick = {
+                    openCustomChromeTab(context = context, it)
+                },
+                newsType = newsType ?: "",
+                newsIdentifier = newsTypeId ?: ""
+            )
+
+        }
+
+        composable(route = Route.NewsBySource.name) {
+            SourceScreenRoute(onNewsClick = {
+                navController.navigate(
+                    route = Route.topHeadlineRoute.buildPath(
+                        newsType = AppConstant.NewsBy.IntentParam.Value.SOURCE,
+                        newsTypeId = it
+                    )
+                )
+            })
+        }
+
+        composable(route = Route.NewsByLanguages.name) {
+            LanguagesScreenRoute(onNewsClick = {
+                navController.navigate(
+                    route = Route.topHeadlineRoute.buildPath(
+                        newsType = AppConstant.NewsBy.IntentParam.Value.LANGUAGE,
+                        newsTypeId = it
+                    )
+                )
+            })
+        }
+
+        composable(route = Route.NewsByCountries.name) {
+            CountriesScreenRoute(onNewsClick = {
+                navController.navigate(
+                    route = Route.topHeadlineRoute.buildPath(
+                        newsType = AppConstant.NewsBy.IntentParam.Value.COUNTRY,
+                        newsTypeId = it
+                    )
+                )
+            })
+        }
+
+        composable(route = Route.NewsBySearch.name) {
+            SearchScreenRoute(onNewsClick = {
+                openCustomChromeTab(context = context, it)
+            })
+        }
     }
+}
+
+fun openCustomChromeTab(context: Context, url: String) {
+    val builder = CustomTabsIntent.Builder()
+    val customTabsIntent = builder.build()
+    customTabsIntent.launchUrl(context, Uri.parse(url))
 }
