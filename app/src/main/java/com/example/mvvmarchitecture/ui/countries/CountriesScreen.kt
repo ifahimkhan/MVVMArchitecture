@@ -9,17 +9,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.data.model.Country
+import com.example.mvvmarchitecture.ui.base.TopAppBar
 import com.example.mvvmarchitecture.ui.base.UiState
 import com.example.mvvmarchitecture.ui.base.showError
 import com.example.mvvmarchitecture.ui.base.showLoading
@@ -27,17 +32,30 @@ import com.example.mvvmarchitecture.ui.base.showLoading
 @Composable
 fun CountriesScreenRoute(
     onNewsClick: (countryCode: String) -> Unit,
-    viewModel: CountryViewModel = hiltViewModel()
+    viewModel: CountryViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val countriesUiState: UiState<List<Country>> by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        CountriesScreen(countriesUiState, onNewsClick)
-    }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = stringResource(id = R.string.screen_news_countries),
+                showBackArrow = true,
+                onBackArrowClick = { navController.popBackStack() }
+            )
+        }, content = { padding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                CountriesScreen(countriesUiState, onNewsClick)
+            }
+        })
+
 }
 
 @Composable

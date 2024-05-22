@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,13 +16,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.data.model.Article
-import com.example.mvvmarchitecture.data.model.Source
+import com.example.mvvmarchitecture.ui.base.TopAppBar
 import com.example.mvvmarchitecture.ui.base.UiState
 import com.example.mvvmarchitecture.ui.base.showError
 import com.example.mvvmarchitecture.ui.base.showLoading
@@ -34,35 +38,45 @@ fun TopHeadLineScreenRoute(
     onNewsClick: (url: String) -> Unit,
     viewModel: TopHeadlineViewModel = hiltViewModel(),
     newsType: String = "",
-    newsIdentifier: String = ""
+    newsIdentifier: String = "",
+    navController: NavHostController
 ) {
     val uiState: UiState<List<Article>> by viewModel.uiState.collectAsStateWithLifecycle()
+    var title = stringResource(id = R.string.screen_top_headline)
+    Scaffold(topBar = {
+        TopAppBar(title,
+            showBackArrow = true,
+            onBackArrowClick = {
+                navController.popBackStack()
+            })
+    }) { padding ->
 
-    LaunchedEffect(key1 = Unit,
-        block = {
-            when (newsType) {
-                AppConstant.NewsBy.IntentParam.Value.COUNTRY -> {
-                    viewModel.fetchNewsByCountry(newsIdentifier)
+        LaunchedEffect(key1 = Unit,
+            block = {
+                when (newsType) {
+                    AppConstant.NewsBy.IntentParam.Value.COUNTRY -> {
+                        viewModel.fetchNewsByCountry(newsIdentifier)
+                    }
+
+                    AppConstant.NewsBy.IntentParam.Value.SOURCE -> {
+                        viewModel.fetchNewsBySource(newsIdentifier)
+                    }
+
+                    AppConstant.NewsBy.IntentParam.Value.LANGUAGE -> {
+                        viewModel.fetchNewsByLanguage(newsIdentifier)
+                    }
+
+                    else -> {
+                        viewModel.fetchTopHeadlines()
+                    }
+
                 }
-
-                AppConstant.NewsBy.IntentParam.Value.SOURCE -> {
-                    viewModel.fetchNewsBySource(newsIdentifier)
-                }
-
-                AppConstant.NewsBy.IntentParam.Value.LANGUAGE -> {
-                    viewModel.fetchNewsByLanguage(newsIdentifier)
-                }
-
-                else -> {
-                    viewModel.fetchTopHeadlines()
-                }
-
-            }
-        })
-
-    Column(modifier = Modifier.padding(4.dp)) {
-        TopHeadLineScreen(uiState, onNewsClick)
+            })
+        Column(modifier = Modifier.padding(padding)) {
+            TopHeadLineScreen(uiState, onNewsClick)
+        }
     }
+
 
 }
 
@@ -100,36 +114,36 @@ fun Article(article: Article, onNewsClick: (url: String) -> Unit) {
                 onNewsClick(article.url)
             }
         }) {
-        BannerImage(article)
+        BannerImage(article.urlToImage, article.title)
         TitleText(article.title)
         DescriptionText(article.description)
-        SourceText(article.source)
+        SourceText(article.source.name)
     }
 }
 
 @Composable
-fun SourceText(source: Source) {
+fun SourceText(name: String) {
     Text(
-        text = source.name,
+        text = name,
         style = MaterialTheme.typography.titleSmall,
         color = Color.Gray,
         maxLines = 1,
         modifier = Modifier.padding(4.dp, 4.dp, 4.dp, 8.dp)
     )
 }
+
 @Preview
 @Composable
-fun DescriptionText(description: String) {
+fun DescriptionText(description: String = "") {
+    if (description.isNullOrEmpty()) return
+    Text(
+        text = description,
+        style = MaterialTheme.typography.titleSmall,
+        color = Color.Gray,
+        maxLines = 1,
+        modifier = Modifier.padding(4.dp, 4.dp, 4.dp, 8.dp)
+    )
 
-    if (!description.isNullOrEmpty()) {
-        Text(
-            text = description,
-            style = MaterialTheme.typography.titleSmall,
-            color = Color.Gray,
-            maxLines = 1,
-            modifier = Modifier.padding(4.dp, 4.dp, 4.dp, 8.dp)
-        )
-    }
 }
 
 @Preview
@@ -147,9 +161,9 @@ fun TitleText(title: String) {
 }
 
 @Composable
-fun BannerImage(article: Article) {
+fun BannerImage(imageUrl: String?, title: String) {
     AsyncImage(
-        model = article.urlToImage, contentDescription = article.title,
+        model = imageUrl, contentDescription = title,
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .height(200.dp)

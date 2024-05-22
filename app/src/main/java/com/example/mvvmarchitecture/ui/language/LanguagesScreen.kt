@@ -9,17 +9,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.data.model.Language
+import com.example.mvvmarchitecture.ui.base.TopAppBar
 import com.example.mvvmarchitecture.ui.base.UiState
 import com.example.mvvmarchitecture.ui.base.showError
 import com.example.mvvmarchitecture.ui.base.showLoading
@@ -27,15 +32,27 @@ import com.example.mvvmarchitecture.ui.base.showLoading
 @Composable
 fun LanguagesScreenRoute(
     onNewsClick: (languageId: String) -> Unit,
-    viewModel: LanguageViewModel = hiltViewModel()
+    viewModel: LanguageViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val uiState: UiState<List<Language>> by viewModel.uiState.collectAsStateWithLifecycle()
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        LanguagesScreen(uiState, onNewsClick)
+    var title = stringResource(id = R.string.screen_news_languages)
+    Scaffold(topBar = {
+        TopAppBar(
+            title = title,
+            showBackArrow = true,
+            onBackArrowClick = { navController.popBackStack() }
+        )
+    }) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LanguagesScreen(uiState, onNewsClick)
+        }
     }
 
 }
