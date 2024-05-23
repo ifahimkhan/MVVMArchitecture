@@ -1,14 +1,23 @@
 package com.example.mvvmarchitecture.di.module
 
+import android.content.Context
+import androidx.room.Room
 import com.example.mvvmarchitecture.data.api.HeaderInterceptor
 import com.example.mvvmarchitecture.data.api.NetworkService
+import com.example.mvvmarchitecture.data.local.AppDatabase
+import com.example.mvvmarchitecture.data.local.AppDatabaseService
+import com.example.mvvmarchitecture.data.local.DatabaseService
 import com.example.mvvmarchitecture.di.BaseUrl
+import com.example.mvvmarchitecture.di.DatabaseName
 import com.example.mvvmarchitecture.utils.AppConstant
+import com.example.mvvmarchitecture.utils.NetworkHelper
+import com.example.mvvmarchitecture.utils.NetworkHelperImpl
 import com.example.mvvmarchitecture.utils.logger.AppLogger
 import com.example.mvvmarchitecture.utils.logger.Logger
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -17,7 +26,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class ApplicationModule() {
+class ApplicationModule {
     @BaseUrl
     @Provides
     fun provideBaseUrl(): String = AppConstant.BASE_URL
@@ -55,4 +64,32 @@ class ApplicationModule() {
     @Singleton
     fun provideLogger(): Logger = AppLogger()
 
+    @DatabaseName
+    @Provides
+    fun provideDatabaseName(): String = AppConstant.DATABASE_NAME
+
+    @Provides
+    @Singleton
+    fun provideAppDatabase(
+        @ApplicationContext context: Context,
+        @DatabaseName databaseName: String
+    ): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            databaseName
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabaseService(appDatabase: AppDatabase): DatabaseService {
+        return AppDatabaseService(appDatabase)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNetworkHelper(@ApplicationContext context: Context): NetworkHelper {
+        return NetworkHelperImpl(context = context)
+    }
 }

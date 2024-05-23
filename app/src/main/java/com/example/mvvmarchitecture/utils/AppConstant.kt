@@ -10,16 +10,21 @@ object AppConstant {
     const val FILE_COUNTRIES = "countries.json"
     const val FILE_LANGUAGES = "languages.json"
 
+    const val DATABASE_NAME = "AppDatabase"
 
-    sealed class NewsType : Parcelable {
-        @Parcelize
-        data class COUNTRY(var countryCode: String) : NewsType()
+    object NewsBy {
+        object IntentParam {
+            object Key {
+                const val NEWS_TYPE = "newsType"
+                const val NEWS_TYPE_ID = "newsTypeId"
+            }
 
-        @Parcelize
-        data class SOURCE(var sourceId: String) : NewsType()
-
-        @Parcelize
-        data class LANGUAGE(var languageIds: String) : NewsType()
+            object Value {
+                const val COUNTRY = "COUNTRY"
+                const val SOURCE = "SOURCE"
+                const val LANGUAGE = "LANGUAGE"
+            }
+        }
     }
 
     val COUNTRIES_SUPPORTED_BY_NEWS_API = arrayListOf<String>(
