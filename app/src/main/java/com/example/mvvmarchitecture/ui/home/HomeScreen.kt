@@ -63,7 +63,7 @@ fun HomeScreen(navController: NavController = rememberNavController()) {
     ) {
         SimpleButton(
             stringResource(id = R.string.screen_top_headline),
-            Route.Home.name,
+            Route.topHeadlineRoute.name,
             navController
         )
         SimpleButton(
@@ -88,7 +88,7 @@ fun HomeScreen(navController: NavController = rememberNavController()) {
         )
         SimpleButton(
             stringResource(id = R.string.screen_offline_article),
-            Route.NewsBySearch.name,
+            Route.OfflineArticle.name,
             navController
         )
     }

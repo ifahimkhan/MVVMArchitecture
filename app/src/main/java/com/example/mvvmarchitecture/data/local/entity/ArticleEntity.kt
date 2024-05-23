@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class ArticleEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int = 0,
     @ColumnInfo("title") val title: String = "",
-    @ColumnInfo("description") val description: String = "",
+    @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo("url") val url: String = "",
     @ColumnInfo("imageUrl") val imageUrl: String? = "",
     @ColumnInfo("language") val language: String = "",

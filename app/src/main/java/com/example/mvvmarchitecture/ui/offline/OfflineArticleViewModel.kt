@@ -7,15 +7,17 @@ import com.example.mvvmarchitecture.data.repository.TopHeadlineRepository
 import com.example.mvvmarchitecture.ui.base.UiState
 import com.example.mvvmarchitecture.utils.AppConstant
 import com.example.mvvmarchitecture.utils.NetworkHelper
+import com.example.mvvmarchitecture.utils.logger.Logger
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import java.util.logging.Logger
 import javax.inject.Inject
 
+@HiltViewModel
 class OfflineArticleViewModel @Inject constructor(
     private val topHeadlineRepository: TopHeadlineRepository,
     private val logger: Logger,
