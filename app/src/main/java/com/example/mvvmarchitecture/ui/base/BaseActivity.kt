@@ -8,7 +8,4 @@ import javax.inject.Inject
 open class BaseActivity : AppCompatActivity() {
     @Inject
     lateinit var logger: Logger
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 }
