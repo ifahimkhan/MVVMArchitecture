@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mvvmarchitecture.data.model.Article
 import com.example.mvvmarchitecture.data.repository.TopHeadlineRepository
 import com.example.mvvmarchitecture.ui.base.UiState
-import com.example.mvvmarchitecture.utils.AppConstant.COUNTRY
+import com.example.mvvmarchitecture.utils.AppConstant.DEFAULT_COUNTRY
 import com.example.mvvmarchitecture.utils.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +33,7 @@ class TopHeadlineViewModel @Inject constructor(
 
     public fun fetchTopHeadlines() {
         viewModelScope.launch {
-            topHeadlineRepository.getTopHeadlines(COUNTRY)
+            topHeadlineRepository.getTopHeadlines(DEFAULT_COUNTRY)
                 .catch { e ->
                     _uiState.value = UiState.Error(e.toString())
                 }

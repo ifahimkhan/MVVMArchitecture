@@ -2,6 +2,7 @@ package com.example.mvvmarchitecture.di.module
 
 import android.content.Context
 import androidx.room.Room
+import androidx.work.WorkManager
 import com.example.mvvmarchitecture.data.api.HeaderInterceptor
 import com.example.mvvmarchitecture.data.api.NetworkService
 import com.example.mvvmarchitecture.data.local.AppDatabase
@@ -9,6 +10,7 @@ import com.example.mvvmarchitecture.data.local.AppDatabaseService
 import com.example.mvvmarchitecture.data.local.DatabaseService
 import com.example.mvvmarchitecture.di.BaseUrl
 import com.example.mvvmarchitecture.di.DatabaseName
+import com.example.mvvmarchitecture.notifications.NotificationHelper
 import com.example.mvvmarchitecture.utils.AppConstant
 import com.example.mvvmarchitecture.utils.NetworkHelper
 import com.example.mvvmarchitecture.utils.NetworkHelperImpl
@@ -91,5 +93,18 @@ class ApplicationModule {
     @Provides
     fun provideNetworkHelper(@ApplicationContext context: Context): NetworkHelper {
         return NetworkHelperImpl(context = context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
+        return WorkManager.getInstance(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationHelper(@ApplicationContext context: Context): NotificationHelper {
+
+        return NotificationHelper(context)
     }
 }
