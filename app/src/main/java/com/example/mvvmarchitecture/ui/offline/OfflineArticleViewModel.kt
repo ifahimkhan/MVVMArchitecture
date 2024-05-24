@@ -38,7 +38,7 @@ class OfflineArticleViewModel @Inject constructor(
 
     private fun fetchNewsArticleFromDb() {
         viewModelScope.launch {
-            topHeadlineRepository.getNewsArticleDirectFromDb(AppConstant.COUNTRY)
+            topHeadlineRepository.getNewsArticleDirectFromDb(AppConstant.DEFAULT_COUNTRY)
                 .flowOn(Dispatchers.IO)
                 .catch { e -> _uiState.value = UiState.Error(e.toString()) }
                 .collect {
@@ -49,7 +49,7 @@ class OfflineArticleViewModel @Inject constructor(
 
     private fun fetchNewsArticles() {
         viewModelScope.launch {
-            topHeadlineRepository.getNewsArticles(AppConstant.COUNTRY)
+            topHeadlineRepository.getNewsArticles(AppConstant.DEFAULT_COUNTRY)
                 .flowOn(Dispatchers.IO)
                 .catch { e ->
                     _uiState.value = UiState.Error(e.toString())

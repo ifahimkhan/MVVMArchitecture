@@ -101,5 +101,11 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.5.0")
     kapt ("androidx.room:room-compiler:2.6.1")
 
+    //Work manager
+    implementation("androidx.hilt:hilt-work:1.1.0")
+    implementation("androidx.work:work-runtime:2.9.0")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
+
+
 
 }
