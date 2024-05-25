@@ -67,6 +67,11 @@ fun HomeScreen(navController: NavController = rememberNavController()) {
             navController
         )
         SimpleButton(
+            title = stringResource(id = R.string.screen_top_headline_pagination),
+            route = Route.PaginationTopHeadline.name,
+            navController
+        )
+        SimpleButton(
             stringResource(id = R.string.screen_news_sources),
             Route.NewsBySource.name,
             navController

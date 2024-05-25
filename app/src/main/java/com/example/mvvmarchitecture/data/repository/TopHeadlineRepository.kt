@@ -1,5 +1,8 @@
 package com.example.mvvmarchitecture.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.mvvmarchitecture.data.api.NetworkService
 import com.example.mvvmarchitecture.data.local.DatabaseService
 import com.example.mvvmarchitecture.data.local.entity.ArticleEntity
@@ -63,5 +66,11 @@ class TopHeadlineRepository @Inject constructor(
 
     fun getNewsArticleDirectFromDb(country: String): Flow<List<ArticleEntity>> {
         return databaseService.getNewsArticles()
+    }
+
+    fun getTopHeadlinesPaging(): Flow<PagingData<Article>> {
+        return Pager(config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = { TopHeadlinePagingSource(networkService) })
+            .flow
     }
 }

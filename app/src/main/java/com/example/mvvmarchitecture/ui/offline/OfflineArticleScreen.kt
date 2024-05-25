@@ -65,6 +65,9 @@ fun TopHeadLineOfflineScreen(
         is UiState.Success -> {
             OfflineArticleList(uiState.data, onNewsClick)
         }
+
+        else -> {}
+
     }
 }
 

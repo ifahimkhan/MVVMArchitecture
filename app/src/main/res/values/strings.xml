@@ -8,4 +8,5 @@
     <string name="screen_news_languages">Languages</string>
     <string name="screen_search_news">Search News</string>
     <string name="screen_offline_article">Offline Article</string>
+    <string name="screen_top_headline_pagination">Pagination Top Headlines</string>
 </resources>
