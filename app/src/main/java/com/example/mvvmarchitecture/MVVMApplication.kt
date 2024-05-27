@@ -41,7 +41,7 @@ class MVVMApplication : Application(), Configuration.Provider {
             NewsWorker::class.java,
             24,
             TimeUnit.HOURS
-        )
+        ).setConstraints(constraints)
             .setInitialDelay(
                 TimeUtil.getInitialDelay(
                     AppConstant.Worker.DAILY_NEWS_UPDATE_HOURS,

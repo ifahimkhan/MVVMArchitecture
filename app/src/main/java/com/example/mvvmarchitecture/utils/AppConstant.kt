@@ -24,6 +24,11 @@ object AppConstant {
         }
     }
 
+    object Paging {
+        const val INITIAL_PAGE = 1
+        const val PAGE_SIZE = 10
+    }
+
     object Worker {
         const val DAILY_NEWS_UPDATE = "PeriodicDailyNewsUpdate"
         const val DAILY_NEWS_UPDATE_HOURS = 6

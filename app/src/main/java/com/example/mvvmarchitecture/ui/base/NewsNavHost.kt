@@ -16,6 +16,7 @@ import com.example.mvvmarchitecture.ui.home.HomeScreenRoute
 import com.example.mvvmarchitecture.ui.language.LanguagesScreenRoute
 import com.example.mvvmarchitecture.ui.newssource.SourceScreenRoute
 import com.example.mvvmarchitecture.ui.offline.OfflineArticleRoute
+import com.example.mvvmarchitecture.ui.pagination.PaginationTopHeadlineRoute
 import com.example.mvvmarchitecture.ui.search.SearchScreenRoute
 import com.example.mvvmarchitecture.ui.topheadline.TopHeadLineScreenRoute
 import com.example.mvvmarchitecture.utils.AppConstant
@@ -36,6 +37,7 @@ sealed class Route(val name: String) {
     object NewsByLanguages : Route("newsbylangauages")
     object NewsBySearch : Route("newsbysearch")
     object OfflineArticle : Route("offlinearticle")
+    object PaginationTopHeadline : Route("paginationtopheadline")
 
 }
 
@@ -119,6 +121,12 @@ fun NewsNavHost() {
 
         composable(route = Route.OfflineArticle.name) {
             OfflineArticleRoute(onNewsClick = {
+                openCustomChromeTab(context = context, it)
+            }, navController = navController)
+        }
+
+        composable(route = Route.PaginationTopHeadline.name) {
+            PaginationTopHeadlineRoute(onNewsClick = {
                 openCustomChromeTab(context = context, it)
             }, navController = navController)
         }
