@@ -106,6 +106,9 @@ dependencies {
     implementation("androidx.work:work-runtime:2.9.0")
     kapt("androidx.hilt:hilt-compiler:1.1.0")
 
+    implementation ("androidx.paging:paging-compose:3.2.1")
+
+
 
 
 }

@@ -1,8 +1,10 @@
 package com.example.mvvmarchitecture.ui.search
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -61,6 +63,9 @@ fun SearchScreenRoute(
 
             SearchBar(
                 query = text,
+                modifier = Modifier.fillMaxWidth()
+                    .padding(top=10.dp, start = 5.dp, end = 5.dp)
+                    .border(1.dp,Color.Black),
                 onQueryChange = {
                     text = it
                     viewModel.fetchNewsBySearch(text)

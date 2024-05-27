@@ -1,31 +1,28 @@
-package com.example.mvvmarchitecture.ui.offline
+package com.example.mvvmarchitecture.ui.pagination
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.mvvmarchitecture.R
-import com.example.mvvmarchitecture.data.local.entity.ArticleEntity
+import com.example.mvvmarchitecture.data.model.Article
 import com.example.mvvmarchitecture.ui.base.TopAppBar
-import com.example.mvvmarchitecture.ui.base.UiState
 import com.example.mvvmarchitecture.ui.base.showError
 import com.example.mvvmarchitecture.ui.base.showLoading
 import com.example.mvvmarchitecture.ui.topheadline.BannerImage
@@ -33,62 +30,70 @@ import com.example.mvvmarchitecture.ui.topheadline.DescriptionText
 import com.example.mvvmarchitecture.ui.topheadline.SourceText
 import com.example.mvvmarchitecture.ui.topheadline.TitleText
 
-
 @Composable
-fun OfflineArticleRoute(
+fun PaginationTopHeadlineRoute(
     onNewsClick: (url: String) -> Unit,
-    viewModel: OfflineArticleViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
+    viewModel: PaginationTopHeadlineViewModel = hiltViewModel()
 ) {
-    val uiState: UiState<List<ArticleEntity>> by viewModel.uiState.collectAsStateWithLifecycle()
+    val topHeadlineUiState = viewModel.topHeadlineUiState.collectAsLazyPagingItems()
 
     Scaffold(topBar = {
         TopAppBar(
-            title = stringResource(id = R.string.screen_offline_article),
-            showBackArrow = true,
-            onBackArrowClick = { navController.popBackStack() }
+            title = stringResource(id = R.string.screen_top_headline_pagination),
+            showBackArrow = true
         )
+        { navController.popBackStack() }
     }) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            TopHeadLineOfflineScreen(uiState = uiState, onNewsClick = onNewsClick)
-
+        Column(modifier = Modifier.padding(paddingValues)) {
+            TopHeadlineScreen(topHeadlineUiState, onNewsClick)
         }
     }
 
 }
 
 @Composable
-fun TopHeadLineOfflineScreen(
-    uiState: UiState<List<ArticleEntity>>,
+fun TopHeadlineScreen(
+    articles: LazyPagingItems<Article>,
     onNewsClick: (url: String) -> Unit
 ) {
-    when (uiState) {
-        is UiState.Error -> showError(text = uiState.message)
-        is UiState.Loading -> showLoading()
-        is UiState.Success -> {
-            OfflineArticleList(uiState.data, onNewsClick)
+    ArticleList(articles, onNewsClick)
+    articles.apply {
+        when {
+            loadState.refresh is LoadState.Loading -> {
+                showLoading()
+            }
+
+            loadState.refresh is LoadState.Error ->{
+                val error = articles.loadState.refresh as LoadState.Error
+                error.error.localizedMessage?.let { showError(text = it) }
+            }
+
+            loadState.append is LoadState.Loading -> {
+                showLoading()
+            }
+
+            loadState.append is LoadState.Error -> {
+                val error = articles.loadState.append as LoadState.Error
+                showError(error.error.localizedMessage!!)
+            }
         }
-
-        else -> {}
-
     }
+
 }
 
 @Composable
-fun OfflineArticleList(data: List<ArticleEntity>, onNewsClick: (url: String) -> Unit) {
+fun ArticleList(articles: LazyPagingItems<Article>, onNewsClick: (url: String) -> Unit) {
+
     LazyColumn {
-        items(data, key = { entity -> entity.url }) { entity ->
-            ShowArticle(entity, onNewsClick)
+        items(articles.itemCount, key = { index -> articles[index]!!.url }) { index ->
+            ApiArticle(articles[index]!!, onNewsClick)
         }
     }
 }
 
 @Composable
-fun ShowArticle(article: ArticleEntity, onNewsClick: (url: String) -> Unit) {
+fun ApiArticle(article: Article, onNewsClick: (url: String) -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
@@ -104,10 +109,11 @@ fun ShowArticle(article: ArticleEntity, onNewsClick: (url: String) -> Unit) {
                     onNewsClick(article.url)
                 }
             }) {
-            BannerImage(article.imageUrl, article.title)
+
+            BannerImage(imageUrl = article.urlToImage, title = article.title)
             TitleText(article.title)
-            article.description?.let { DescriptionText(it) }
-            article.source.name?.let { SourceText(it) }
+            DescriptionText(article.description)
+            SourceText(article.source.name)
         }
     }
 
