@@ -57,7 +57,8 @@ fun HomeScreen(navController: NavController = rememberNavController()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(Color.White)
+            .padding(top = 30.dp ),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -110,15 +111,15 @@ fun SimpleButton(
         onClick = {
             navController.navigate(route)
         },
-        shape = RoundedCornerShape(5.dp),
+        shape = RoundedCornerShape(10.dp),
         elevation = ButtonDefaults.elevatedButtonElevation(),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp),
-        contentPadding = PaddingValues(10.dp)
+            .padding(8.dp),
+        contentPadding = PaddingValues(16.dp)
     ) {
 
-        Text(text = title, color = Color.White, fontSize = 16.sp)
+        Text(text = title, color = Color.White, fontSize = 18.sp)
     }
 
 }
