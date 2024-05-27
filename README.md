@@ -43,7 +43,7 @@ The repository takes you on an extensive Android development journey using the M
 
 ## Screenshots
 
-![image](https://github-production-user-asset-6210df.s3.amazonaws.com/41280216/321429443-008582c1-ac87-4388-a785-3c3a36a3a432.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240527%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240527T162210Z&X-Amz-Expires=300&X-Amz-Signature=ec8d6155ace0799064231c2eb13daeac92f4e54af8ddef9c18e301fd716b062e&X-Amz-SignedHeaders=host&actor_id=150517236&key_id=0&repo_id=724472006)
+![image](/screenshot.png)
 
 <br>
 
